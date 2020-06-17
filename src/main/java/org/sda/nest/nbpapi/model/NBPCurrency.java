@@ -1,4 +1,6 @@
-package org.sda.nest.nbpapi;
+package org.sda.nest.nbpapi.model;
+
+import org.sda.nest.nbpapi.exception.CurrencyNotFoundException;
 
 public enum NBPCurrency {
     RUBEL("RUB"),

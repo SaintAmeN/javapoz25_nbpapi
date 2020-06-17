@@ -1,4 +1,4 @@
-package org.sda.nest.nbpapi;
+package org.sda.nest.nbpapi.exception;
 
 public class CurrencyNotFoundException extends Exception {
     public CurrencyNotFoundException(String message) {
