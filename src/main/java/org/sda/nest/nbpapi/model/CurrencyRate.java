@@ -10,5 +10,9 @@ import lombok.NoArgsConstructor;
 public class CurrencyRate {
     private String no;
     private String effectiveDate;
-    private double mid;
+    // double = nie można przypisać null
+    // Double = mogę przypisać null
+    private Double mid; // srednia
+    private Double ask; // kupno
+    private Double bid; // sprzedaż
 }

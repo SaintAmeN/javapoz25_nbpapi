@@ -14,7 +14,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 public class NBPApi {
-    private final static String API_CALL_URL = "http://api.nbp.pl/api/exchangerates/rates/a/{currency_code}/{date_start}/{date_end}/";
+    private final static String API_CALL_URL = "http://api.nbp.pl/api/exchangerates/rates/{table}/{currency_code}/{date_start}/{date_end}/";
     private final static int HTTP_OK = 200;
     private final static int HTTP_BAD_REQUEST = 400;
 
@@ -38,7 +38,7 @@ public class NBPApi {
         } catch (InterruptedException e) {
             throw new APICallException(e);
         }
-        throw new APICallException("API call error code: " +response.statusCode());
+        throw new APICallException("API call error code: " + response.statusCode());
     }
 
     private HttpRequest createRequestForCurrencyRatesBetween(UserAnswers parameters) {
@@ -48,6 +48,7 @@ public class NBPApi {
                 //URI.create("http://api.nbp.pl/api/exchangerates/rates/a/"+parameters.getCurrency()+"/"+parameters.getDateStart()+"/"+parameters.getDateEnd()+"/")
                 .uri(URI.create(
                         API_CALL_URL
+                                .replaceAll("\\{table\\}", parameters.getTableType().getTable())
                                 .replaceAll("\\{currency_code\\}", parameters.getCurrency().getShortName())
                                 .replaceAll("\\{date_start\\}", parameters.getDateStart().toString())
                                 .replaceAll("\\{date_end\\}", parameters.getDateEnd().toString())))

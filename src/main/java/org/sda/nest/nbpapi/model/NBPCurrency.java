@@ -16,6 +16,12 @@ public enum NBPCurrency {
         return shortName;
     }
 
+    /**
+     * Parser waluty -szukamy dopasowania po jednym ze słow: rubel, dolar, euro
+     * @param input
+     * @return
+     * @throws CurrencyNotFoundException
+     */
     public static NBPCurrency parse(String input) throws CurrencyNotFoundException {
         if (input.toUpperCase().contains(RUBEL.toString())) {
             return RUBEL;

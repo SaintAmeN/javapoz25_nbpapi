@@ -4,10 +4,11 @@ import org.sda.nest.nbpapi.exception.APICallException;
 import org.sda.nest.nbpapi.exception.CurrencyNotFoundException;
 import org.sda.nest.nbpapi.exception.WrongDateException;
 import org.sda.nest.nbpapi.model.CurrencyRate;
+import org.sda.nest.nbpapi.model.TableType;
 import org.sda.nest.nbpapi.model.UserAnswers;
 
-import java.net.http.HttpClient;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -17,6 +18,8 @@ public class Main {
         // Jeśli użytkownik ma wprowadzać dane, to powinien to robić w "klasie Main"
         // - nie przekazujemy scannera
         // - nie dokonujemy redefinicji (nie tworzymy kolejnych instancji Scannera)
+
+        // zbieramy odpowiedzi do konetenera (klasy zbiorczej) - UserAnswers
         UserAnswers answers = new UserAnswers();
 
         askForCurrency(scanner, answers);
@@ -27,11 +30,27 @@ public class Main {
 
         NBPApi api = new NBPApi();
         try {
+            System.out.println("Czy chcesz tabelę kursów średnich:");
+            answers.setTableType(scanner.nextLine());
+
             List<CurrencyRate> rates = api.requestRates(answers);
 
             rates.forEach(rate -> {
-                System.out.println(rate.getNo() + " -- " + rate.getEffectiveDate() + " -- " + rate.getMid());
+                // pętla foreach która wypisuje kolejno wszystkie rekordy
+                System.out.println(rate.getNo() + " -- " + rate.getEffectiveDate() + " -- " + rate.getMid() + " -- " + rate.getAsk() + " -- " + rate.getBid());
             });
+
+            if(answers.getTableType() == TableType.TABLE_BID_ASK){
+                Optional<CurrencyRate> rateMin = rates.stream().min((o1, o2) -> Double.compare(o1.getAsk(), o2.getAsk()));
+                if(rateMin.isPresent()){
+                    System.out.println("Min: " + rateMin.get());
+                }
+                Optional<CurrencyRate> rateMax = rates.stream().max((o1, o2) -> Double.compare(o1.getBid(), o2.getBid()));
+                if(rateMax.isPresent()){
+                    System.out.println("Max: " + rateMax.get());
+                }
+            }
+
             // jeśli wszystko jest ok!
         } catch (APICallException e) {
             System.err.println(e.getMessage());
@@ -40,8 +59,10 @@ public class Main {
     }
 
     private static void askForDateEnd(Scanner scanner, UserAnswers answers) {
+        // do - while = wiem że jeden obieg musi się wykonać
         do {
             try {
+                // pytanko o datę i zebranie odpowiedzi
                 System.out.println("Podaj datę końcową:");
                 answers.setDateEnd(scanner.nextLine());
             } catch (WrongDateException e) {

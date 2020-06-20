@@ -11,3 +11,6 @@ public class APICallException extends Exception {
         super(message);
     }
 }
+// rodzaj sygnałów
+//      - white list (friend)
+//      - black list (foe)
