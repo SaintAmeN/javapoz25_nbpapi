@@ -1,6 +1,6 @@
 # Nest Recruitment App Repository
 This repository contains solution for task described by Nest Bank. Task is:<br/>
-`
+````
 Celem zadania rekrutacyjnego jest utworzenie webserwisu, który będzie pobierał waluty z API NBP,
 a następnie przetwarzał te dane.
 Link do API NBP:
@@ -16,7 +16,7 @@ Serwis po wysłania zapytania do API NBP powinien otrzymać dane dotyczące cen 
 podanej waluty w oczekiwanym zakresie dat.
 Następnie na podstawie otrzymanych danych należy wskazać najniższą cenę kupna i najwyższą
 sprzedaży, wraz z dotyczącymi ich datami wystąpienia w podanym zakresie.
-`
+````
 
 ## How to run
 To run this project, build it using following commands:<br/>
